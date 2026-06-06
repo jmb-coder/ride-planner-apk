@@ -1,3 +1,4 @@
+[app]
 name: Build APK (Docker)
 
 on:
@@ -15,13 +16,15 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Fix git safe directory
-      run: |
-        git config --global --add safe.directory /__w/*
+    - name: Set safe directory
+      run: git config --global --add safe.directory /__w/*
+
+    - name: Show files (debug)
+      run: ls -la
 
     - name: Build APK
       run: |
-        buildozer android debug
+        buildozer -v android debug
 
     - name: Upload APK
       uses: actions/upload-artifact@v4
