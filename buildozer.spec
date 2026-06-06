@@ -3,6 +3,8 @@ title = RidePlanner
 package.name = rideplanner
 package.domain = org.example
 
+version = 0.1
+
 source.dir = .
 source.include_exts = py,npz,webp,png
 
