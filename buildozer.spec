@@ -22,6 +22,6 @@ android.archs = arm64-v8a, armeabi-v7a
 
 p4a.bootstrap = sdl2
 
-# IMPORTANT FIXES
+# 🔥 CRITICAL FIXES (prevents AIDL errors)
 android.ndk_version = 25b
 android.build_tools_version = 33.0.2
