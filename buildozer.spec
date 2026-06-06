@@ -1,14 +1,42 @@
-[app]
-title = RidePlanner
-package.name = rideplanner
-package.domain = org.example
+name: Build Android APK
 
-version = 0.1
+on:
+  workflow_dispatch:
+  push:
 
-source.dir = .
-source.include_exts = py,npz,webp,png
+jobs:
+  build:
+    runs-on: ubuntu-latest
 
-requirements = python3,kivy,numpy
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
 
-android.permissions = INTERNET
-orientation = portrait
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: 3.10
+
+    - name: Install system dependencies
+      run: |
+        sudo apt update
+        sudo apt install -y git zip unzip openjdk-17-jdk
+
+    - name: Install Buildozer
+      run: |
+        pip install --upgrade pip
+        pip install cython buildozer
+
+    - name: Clean build (prevents SDK/AIDL issues)
+      run: |
+        buildozer android clean
+
+    - name: Build APK
+      run: |
+        buildozer android debug
+
+    - name: Upload APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: apk
+        path: bin/*.apk
