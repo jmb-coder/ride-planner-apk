@@ -4,6 +4,9 @@ title = Ride Planner
 package.name = rideplanner
 package.domain = org.alton
 
+android.accept_sdk_license = True
+android.build_tools_version = 33.0.2
+
 source.dir = .
 source.include_exts = py,png,jpg,kv,atlas,webp,npz
 source.include_patterns = *.npz,*.webp
