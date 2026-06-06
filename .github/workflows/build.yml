@@ -1,4 +1,3 @@
-[app]
 name: Build APK (Docker)
 
 on:
