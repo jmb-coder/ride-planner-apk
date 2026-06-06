@@ -1,3 +1,4 @@
+[app]
 name: Build Android APK
 
 on:
