@@ -8,7 +8,7 @@ version = 0.1
 source.dir = .
 source.include_exts = py,npz,webp,png
 
-requirements = python3,kivy,numpy
+requirements = python3,kivy,
 
 android.permissions = INTERNET
 android.api = 33
