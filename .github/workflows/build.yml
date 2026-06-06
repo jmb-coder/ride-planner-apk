@@ -15,8 +15,8 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Set safe directory
-      run: git config --global --add safe.directory /__w/*
+    - name: Move to project folder
+      run: cd $GITHUB_WORKSPACE
 
     - name: Show files (debug)
       run: ls -la
