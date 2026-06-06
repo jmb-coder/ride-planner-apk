@@ -14,7 +14,7 @@ jobs:
         uses: actions/checkout@v4
 
       # =========================
-      # JAVA 17 (MANDATORY)
+      # JAVA 17 (MANDATORY FIX)
       # =========================
       - name: Set up Java 17
         uses: actions/setup-java@v4
@@ -33,7 +33,7 @@ jobs:
       # =========================
       # SYSTEM DEPENDENCIES
       # =========================
-      - name: Install system deps
+      - name: Install system dependencies
         run: |
           sudo apt update
           sudo apt install -y \
@@ -42,7 +42,7 @@ jobs:
             libffi-dev libssl-dev
 
       # =========================
-      # PYTHON TOOLS
+      # PYTHON PACKAGES
       # =========================
       - name: Install Buildozer
         run: |
@@ -50,7 +50,7 @@ jobs:
           pip install cython buildozer kivy==2.3.0 numpy
 
       # =========================
-      # ANDROID SDK (FIXED)
+      # ANDROID SDK (FIXED + STABLE)
       # =========================
       - name: Install Android SDK
         run: |
@@ -66,25 +66,28 @@ jobs:
 
           export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
 
+          # 🔥 FIX LICENSE ISSUE
+          yes | sdkmanager --licenses || true
           yes | sdkmanager --licenses
 
+          # 🔥 USE STABLE BUILD-TOOLS (NOT 37)
           sdkmanager \
             "platform-tools" \
             "platforms;android-33" \
             "build-tools;33.0.2"
 
       # =========================
-      # IMPORTANT PATH FIX (AIDL FIX)
+      # FIX AIDL PATH
       # =========================
-      - name: Fix PATH for AIDL
+      - name: Fix PATH (AIDL fix)
         run: |
           echo "$HOME/android-sdk/build-tools/33.0.2" >> $GITHUB_PATH
           echo "$HOME/android-sdk/platform-tools" >> $GITHUB_PATH
 
       # =========================
-      # CLEAN BUILD
+      # CLEAN BUILD (VERY IMPORTANT)
       # =========================
-      - name: Clean buildozer cache
+      - name: Clean build
         run: |
           rm -rf .buildozer
 
