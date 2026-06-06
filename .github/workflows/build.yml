@@ -14,7 +14,7 @@ jobs:
         uses: actions/checkout@v4
 
       # =========================
-      # FORCE JAVA 17 (IMPORTANT)
+      # JAVA 17 (MANDATORY)
       # =========================
       - name: Set up Java 17
         uses: actions/setup-java@v4
@@ -22,25 +22,35 @@ jobs:
           distribution: temurin
           java-version: '17'
 
+      # =========================
+      # PYTHON
+      # =========================
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
 
-      - name: Install system dependencies
+      # =========================
+      # SYSTEM DEPENDENCIES
+      # =========================
+      - name: Install system deps
         run: |
           sudo apt update
           sudo apt install -y \
             git zip unzip wget \
-            build-essential autoconf libtool pkg-config
-
-      - name: Install Python tools
-        run: |
-          python -m pip install --upgrade pip
-          pip install buildozer cython kivy==2.3.0 numpy
+            build-essential autoconf libtool pkg-config \
+            libffi-dev libssl-dev
 
       # =========================
-      # ANDROID SDK INSTALL
+      # PYTHON TOOLS
+      # =========================
+      - name: Install Buildozer
+        run: |
+          python -m pip install --upgrade pip
+          pip install cython buildozer kivy==2.3.0 numpy
+
+      # =========================
+      # ANDROID SDK (FIXED)
       # =========================
       - name: Install Android SDK
         run: |
@@ -63,6 +73,24 @@ jobs:
             "platforms;android-33" \
             "build-tools;33.0.2"
 
+      # =========================
+      # IMPORTANT PATH FIX (AIDL FIX)
+      # =========================
+      - name: Fix PATH for AIDL
+        run: |
+          echo "$HOME/android-sdk/build-tools/33.0.2" >> $GITHUB_PATH
+          echo "$HOME/android-sdk/platform-tools" >> $GITHUB_PATH
+
+      # =========================
+      # CLEAN BUILD
+      # =========================
+      - name: Clean buildozer cache
+        run: |
+          rm -rf .buildozer
+
+      # =========================
+      # BUILD APK
+      # =========================
       - name: Build APK
         run: |
           export ANDROID_HOME=$HOME/android-sdk
@@ -71,6 +99,9 @@ jobs:
 
           buildozer -v android debug
 
+      # =========================
+      # UPLOAD APK
+      # =========================
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
