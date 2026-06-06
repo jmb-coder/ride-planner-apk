@@ -15,11 +15,13 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Build APK
-      env:
-        BUILDOZER_ALLOW_ROOT: 1
+    - name: Fix permissions
       run: |
-        buildozer android debug
+        git config --global --add safe.directory /__w/*
+
+    - name: Build APK (non-interactive)
+      run: |
+        yes | buildozer android debug
 
     - name: Upload APK
       uses: actions/upload-artifact@v4
